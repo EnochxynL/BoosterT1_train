@@ -37,6 +37,7 @@ import isaaclab.terrains as terrain_gen
 class MySceneCfg(InteractiveSceneCfg):
     """Configuration for the terrain scene with the T1 robot."""
 
+    # TODO: fazer o campo aqui
     terrain = TerrainImporterCfg(
         prim_path="/World/ground",
         terrain_type="plane",
@@ -53,6 +54,37 @@ class MySceneCfg(InteractiveSceneCfg):
         ),
         debug_vis=False,
     )
+
+    # TODO: fazer os Gols
+    # Fazer urdf
+
+
+    # TODO: fazer a bola
+
+    """    import isaaclab.sim as sim_utils
+    from isaaclab.assets import RigidObject, RigidObjectCfg
+
+    # Configuração da esfera rígida
+    ball_cfg = RigidObjectCfg(
+        prim_path="/World/Ball",
+        spawn=sim_utils.SphereCfg(
+            radius=0.1,
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(
+                disable_gravity=False,
+            ),
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.5),
+            collision_props=sim_utils.CollisionPropertiesCfg(),
+            visual_material=sim_utils.PreviewSurfaceCfg(
+                diffuse_color=(1.0, 0.0, 0.0)  # vermelho
+            ),
+        ),
+        init_state=RigidObjectCfg.InitialStateCfg(
+            pos=(0.0, 0.0, 1.0),  # posição inicial (x, y, z)
+        ),
+    )
+
+    ball = RigidObject(cfg=ball_cfg)
+    """
 
     robot: ArticulationCfg = MISSING
 
@@ -230,6 +262,14 @@ class EventCfg:
 class RewardsCfg:
     """Reward terms for the MDP."""
 
+    # TODO: Ler o artigo e replicar as rewards
+
+    # TODO: task de fazer o pe tocar a bola
+
+    # TODO: Adicionar reward para a bola ganhar velocidade
+
+    # TODO: Adicionar reward para a bola passar a linha do gol
+
     # --- task rewards ---
     track_lin_vel_xy_exp = RewTerm(
         func=mdp.track_lin_vel_xy_exp,
@@ -318,7 +358,7 @@ class CurriculumCfg:
 
 
 @configclass
-class T1LocomotionEnvCfg(ManagerBasedRLEnvCfg):
+class T1KickEnvCfg(ManagerBasedRLEnvCfg):
     """Base locomotion environment configuration for Booster T1."""
 
     scene: MySceneCfg = MySceneCfg(num_envs=4096, env_spacing=2.5)
@@ -373,7 +413,7 @@ class T1LocomotionEnvCfg(ManagerBasedRLEnvCfg):
 
 
 @configclass
-class T1LocomotionFlatEnvCfg(T1LocomotionEnvCfg):
+class T1KickFlatEnvCfg(T1LocomotionEnvCfg):
     """T1 locomotion on flat terrain with state estimation disabled (no base_lin_vel)."""
 
     def __post_init__(self):
@@ -396,7 +436,7 @@ class T1LocomotionFlatEnvCfg(T1LocomotionEnvCfg):
 
 
 @configclass
-class T1LocomotionRoughEnvCfg(T1LocomotionEnvCfg):
+class T1KickRoughEnvCfg(T1LocomotionEnvCfg):
     """T1 locomotion on rough terrain with state estimation disabled."""
 
     def __post_init__(self):
@@ -431,7 +471,7 @@ class T1LocomotionRoughEnvCfg(T1LocomotionEnvCfg):
                     noise_step=0.005,
                     border_width=0.25,
                 ),
-                "pyramid_stairs": terrain_gen.PyramidStairsTerrainCfg(
+                "pyramid_stairs": terrain_gen.HfPyramidStairsTerrainCfg(
                     proportion=0.15,
                     step_height_range=(0.05, 0.15),
                     step_width=0.3,
@@ -439,7 +479,7 @@ class T1LocomotionRoughEnvCfg(T1LocomotionEnvCfg):
                     border_width=1.0,
                     holes=False,
                 ),
-                "pyramid_stairs_inv": terrain_gen.PyramidStairsTerrainCfg(
+                "pyramid_stairs_inv": terrain_gen.HfPyramidStairsTerrainCfg(
                     proportion=0.15,
                     step_height_range=(0.05, 0.15),
                     step_width=0.3,
@@ -457,7 +497,7 @@ class T1LocomotionRoughEnvCfg(T1LocomotionEnvCfg):
 
 
 @configclass
-class T1LocomotionPlayEnvCfg(T1LocomotionFlatEnvCfg):
+class T1KickPlayEnvCfg(T1LocomotionFlatEnvCfg):
     """T1 locomotion play environment (no pushes, single env)."""
 
     def __post_init__(self):

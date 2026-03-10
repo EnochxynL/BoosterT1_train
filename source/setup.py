@@ -8,7 +8,7 @@
 import os
 import toml
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 # Obtain the extension data from the extension.toml file
 EXTENSION_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -24,7 +24,11 @@ INSTALL_REQUIRES = [
 # Installation operation
 setup(
     name="booster_train",
-    packages=["booster_train"],
+    package_dir={"booster_train": "train"},
+    packages=["booster_train"] + [
+        "booster_train." + p
+        for p in find_packages(where="train")
+    ],
     author=EXTENSION_TOML_DATA["package"]["author"],
     maintainer=EXTENSION_TOML_DATA["package"]["maintainer"],
     url=EXTENSION_TOML_DATA["package"]["repository"],
