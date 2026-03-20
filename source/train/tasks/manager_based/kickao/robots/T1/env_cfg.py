@@ -24,6 +24,7 @@ from dataclasses import MISSING
 import isaaclab_tasks.manager_based.locomotion.velocity.mdp as mdp
 
 from booster_train.assets.robots.booster import BOOSTER_T1_CFG, T1_ACTION_SCALE
+from booster_train.tasks.manager_based.locomotion.robots.T1.env_cfg import T1LocomotionEnvCfg, T1LocomotionFlatEnvCfg
 
 import isaaclab.terrains as terrain_gen
 
